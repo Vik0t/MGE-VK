@@ -23,6 +23,7 @@ fun App(
     name: String,
     icon: ImageVector,
     tag: String,
+    stars: Double,
 ){
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -39,7 +40,9 @@ fun App(
             )
             Column {
                 Text(name, color = MaterialTheme.colorScheme.primary)
-                Text("asd")
+                Text(tag)
+                Text(
+                    text ="$stars rating")
             }
 
         }

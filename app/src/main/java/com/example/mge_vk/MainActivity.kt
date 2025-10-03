@@ -57,17 +57,20 @@ fun Screen(){
             App(
                 name = "Приложение",
                 icon = Icons.Default.AccountBox,
-                tag = "month of games"
+                tag = "month of games",
+                stars = 4.7
             )
             App(
                 name = "MAx",
                 icon = Icons.Default.AccountBox,
-                tag = "month of games"
+                tag = "month of games",
+                stars = 3.6
             )
             App(
                 name = "VKontakte",
                 icon = Icons.Default.AccountBox,
-                tag = "month of games"
+                tag = "month of games",
+                stars = 2.5
             )
 
 
