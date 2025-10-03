@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MGEVKTheme {
-
+                    Screen()
                 }
             }
         }
@@ -64,7 +64,7 @@ fun Screen(){
                 name = "MAx",
                 icon = Icons.Default.AccountBox,
                 tag = "month of games",
-                stars = 3.6
+                stars = 10.0
             )
             App(
                 name = "VKontakte",
