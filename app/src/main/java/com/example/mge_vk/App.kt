@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.mge_vk.ui.theme.MGEVKTheme
 import androidx.compose.ui.text.font.FontWeight
@@ -38,8 +37,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentHeight
 
 @Composable
 fun App(
@@ -53,11 +50,8 @@ fun App(
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(enabled = true, onClick = {
-                navController.navigate("OnboardScreen")
-            })
+        modifier = Modifier.fillMaxWidth().clickable(enabled = true, onClick = {
+            navController.navigate("OnboardScreen")})
     ){
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -77,10 +71,7 @@ fun App(
 
                 Text(tag)
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                )
-                {
+                Row{
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "lal",
@@ -123,19 +114,14 @@ fun AgeRatingBadge(ageRating: Int, modifier: Modifier = Modifier)
             else -> Color(0xFF757575)
         },
         shape = RoundedCornerShape(4.dp),
-        modifier = modifier.height(height = 18.dp).width(width = 30.dp)
+        modifier = modifier
     ) {
         Text(
-            textAlign = TextAlign.Center,
             text = ageStr,
             color = Color.White,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-                .fillMaxSize()
-                .wrapContentHeight(Alignment.CenterVertically)
-
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
         )
     }
 }
