@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +45,7 @@ fun HomeScreen(navController: NavController)
         AppData("MAx", R.drawable.max, "month of games", 3.6),
         AppData("VKontakte", R.drawable.nichosi, "month of games", 2.5),
         AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("Геи против Пидоров", R.drawable.max, "month of games", 3.6),
+        AppData("русы мге", R.drawable.max, "month of games", 3.6),
         AppData("MAx", R.drawable.max, "month of games", 3.6),
         AppData("MAx", R.drawable.max, "month of games", 3.6),
         AppData("MAx", R.drawable.max, "month of games", 3.6),
@@ -97,26 +98,64 @@ fun Footer(){
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(imageVector = Icons.Default.AccountCircle,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.clickable(enabled = true, onClick = {})
-                .size(50.dp),
-            contentDescription = "lol"
-        )
-        Icon(imageVector = Icons.Default.Search,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-                .size(50.dp),
-            contentDescription = "lol"
-        )
-        Icon(imageVector = Icons.Default.AddCircle,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-                .size(50.dp),
-            contentDescription = "lol"
-        )
-        Icon(imageVector = Icons.Default.Favorite,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-                .size(50.dp),
-            contentDescription = "lol"
-        )
+        ) {
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                modifier = Modifier.size(50.dp),
+                contentDescription = "lol"
+            )
+            Text(
+                text = "Профиль",
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
 
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.clickable(enabled = true, onClick = {})
+        ) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                modifier = Modifier.size(50.dp),
+                contentDescription = "lol"
+            )
+            Text(
+                text = "Поиск",
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.clickable(enabled = true, onClick = {})
+        ) {
+            Icon(
+                imageVector = Icons.Default.AddCircle,
+                modifier = Modifier.size(50.dp),
+                contentDescription = "lol"
+            )
+            Text(
+                text = "Добавить",
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.clickable(enabled = true, onClick = {})
+        ) {
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                modifier = Modifier.size(50.dp),
+                contentDescription = "lol"
+            )
+            Text(
+                text = "Избранное",
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
     }
 }
