@@ -10,26 +10,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mge_vk.ui.theme.MGEVKTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +35,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MGEVKTheme {
-                    Screen()
+                    HomeScreen()
                 }
             }
         }
@@ -45,7 +43,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun Screen(){
+fun HomeScreen(){
     Column(Modifier.fillMaxHeight()
         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
@@ -54,30 +52,24 @@ fun Screen(){
         Column {
             Title()
             Spacer(Modifier.height(16.dp))
-            App(
-                name = "Приложение",
-                icon = Icons.Default.AccountBox,
-                tag = "month of games",
-                stars = 4.7
-            )
-            App(
-                name = "MAx",
-                icon = Icons.Default.AccountBox,
-                tag = "month of games",
-                stars = 10.0
-            )
-            App(
-                name = "VKontakte",
-                icon = Icons.Default.AccountBox,
-                tag = "month of games",
-                stars = 2.5
-            )
+            Column {
+                App(
+                    name = "Max",
+                    icon = painterResource(R.drawable.max),
+                    tag = "lol",
+                    stars = 6.5
+                )
+
+            }
+
+
 
 
         }
         Footer()
     }
 }
+
 @Composable
 fun Footer(){
 
@@ -113,6 +105,6 @@ fun Footer(){
 @Composable
 fun Greeting(){
     MGEVKTheme {
-        com.example.mge_vk.Screen()
+        com.example.mge_vk.HomeScreen()
     }
 }
