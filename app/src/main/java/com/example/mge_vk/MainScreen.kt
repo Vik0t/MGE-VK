@@ -28,6 +28,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 
 @Preview(showBackground = true)
 @Composable
@@ -74,7 +75,8 @@ fun HomeScreen(navController: NavController)
                     name = appData.name,
                     icon = painterResource(appData.iconRes),
                     tag = appData.tag,
-                    stars = appData.stars
+                    stars = appData.stars,
+                    navController = navController
                 )
             }
         }
@@ -97,26 +99,64 @@ fun Footer(){
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(imageVector = Icons.Default.AccountCircle,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.clickable(enabled = true, onClick = {})
-                .size(50.dp),
-            contentDescription = "lol"
-        )
-        Icon(imageVector = Icons.Default.Search,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-                .size(50.dp),
-            contentDescription = "lol"
-        )
-        Icon(imageVector = Icons.Default.AddCircle,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-                .size(50.dp),
-            contentDescription = "lol"
-        )
-        Icon(imageVector = Icons.Default.Favorite,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-                .size(50.dp),
-            contentDescription = "lol"
-        )
+        ) {
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                modifier = Modifier.size(50.dp),
+                contentDescription = "lol"
+            )
+            Text(
+                text = "Профиль",
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
 
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.clickable(enabled = true, onClick = {})
+        ) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                modifier = Modifier.size(50.dp),
+                contentDescription = "lol"
+            )
+            Text(
+                text = "Поиск",
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.clickable(enabled = true, onClick = {})
+        ) {
+            Icon(
+                imageVector = Icons.Default.AddCircle,
+                modifier = Modifier.size(50.dp),
+                contentDescription = "lol"
+            )
+            Text(
+                text = "Добавить",
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.clickable(enabled = true, onClick = {})
+        ) {
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                modifier = Modifier.size(50.dp),
+                contentDescription = "lol"
+            )
+            Text(
+                text = "Избранное",
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
     }
 }
