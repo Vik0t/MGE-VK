@@ -41,11 +41,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 
 val imageList = listOf(
     R.drawable.nichosi,
@@ -62,23 +60,25 @@ val iconImg = R.drawable.nichosi
 val description = "Скачай макс че как лох"
 
 
-@Preview(showBackground = true)
-@Composable
-fun GetCardPreview(){
-    val navController2 = rememberNavController()
-    Card(imageList = imageList,
-        appName = appName,
-        devName = devName,
-        rate = rate,
-        iconImg = iconImg,
-        description = description,
-        navController = navController2
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun GetCardPreview(){
+//    val navController2 = rememberNavController()
+//    Card(imageList = imageList,
+//        appName = appName,
+//        devName = devName,
+//        rate = rate,
+//        iconImg = iconImg,
+//        description = description,
+//        navController = navController2,
+//        onInstallClick =
+//    )
+//}
 
 
 @Composable
-fun CardScreen(navController: NavController, appId: Int? = null){
+fun CardScreen(navController: NavController, appId: Int? = null,
+               onInstallApp: (Int) -> Unit){
 
     val appData = if (appId != null) {
         getAppById(appId) ?: appsList.first()
@@ -92,7 +92,8 @@ fun CardScreen(navController: NavController, appId: Int? = null){
         rate = appData.ageRating,
         iconImg = appData.appIcon,
         description = appData.description,
-        navController = navController
+        navController = navController,
+        onInstallClick = { onInstallApp(appData.appId) }
     )
 }
 
@@ -105,7 +106,8 @@ fun Card(
     rate: Int,
     iconImg: Int,
     description: String,
-    navController: NavController
+    navController: NavController,
+    onInstallClick: () -> Unit
 
 
     ){
@@ -175,7 +177,7 @@ fun Card(
         Spacer(Modifier.width(32.dp))
 
         Button(
-            onClick = {},
+            onClick = onInstallClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)

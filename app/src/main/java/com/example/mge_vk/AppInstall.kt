@@ -1,5 +1,4 @@
-package com.example.mge_vk
-
+// ApkInstaller.kt
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -9,38 +8,28 @@ import androidx.core.content.FileProvider
 import java.io.File
 
 object ApkInstaller {
-    const val REQUEST_CODE_UNKNOWN_APP = 1001
 
-    fun installApk(activity: Activity, apkFile: File): Boolean {
+    fun installApk(activity: Activity, apkFile: File) {
         if (!apkFile.exists()) {
             Toast.makeText(activity, "APK file not found", Toast.LENGTH_SHORT).show()
-            return false
+            return
         }
 
-        // On Android 8.0+ (API 26+), check install permission
+        // On Android 8.0+, check if we can install
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (!activity.packageManager.canRequestPackageInstalls()) {
-                // Launch settings to request permission
-                val intent = Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
-                    data = Uri.parse("package:${activity.packageName}")
-                }
-                activity.startActivityForResult(intent, REQUEST_CODE_UNKNOWN_APP)
-                return true // Permission request in progress
+                // We'll handle permission request via ActivityResultLauncher in MainActivity
+                // So just return here — the launcher will call install after permission
+                return
             }
         }
 
-        // Proceed to install
         startInstallation(activity, apkFile)
-        return true
     }
 
     private fun startInstallation(activity: Activity, apkFile: File) {
         val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            FileProvider.getUriForFile(
-                activity,
-                "${activity.packageName}.fileprovider",
-                apkFile
-            )
+            FileProvider.getUriForFile(activity, "${activity.packageName}.fileprovider", apkFile)
         } else {
             Uri.fromFile(apkFile)
         }
@@ -52,20 +41,5 @@ object ApkInstaller {
         }
 
         activity.startActivity(intent)
-    }
-
-
-    fun isInstallPermissionResult(requestCode: Int): Boolean {
-        return requestCode == REQUEST_CODE_UNKNOWN_APP
-    }
-
-    fun handlePermissionResult(activity: Activity, apkFile: File) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (activity.packageManager.canRequestPackageInstalls()) {
-                startInstallation(activity, apkFile)
-            } else {
-                Toast.makeText(activity, "Installation permission denied", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 }

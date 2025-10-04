@@ -3,7 +3,6 @@ package com.example.mge_vk
 
 
 
-import android.R.attr.maxLines
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +46,8 @@ fun App(
     stars: Double,
     ageRating: Int,
     navController: NavController,
-    appId: Int
+    appId: Int,
+    onInstallClick: () -> Unit
 ){
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -104,7 +104,7 @@ fun App(
 
         }
         Button(
-            onClick = {},
+            onClick = onInstallClick,
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
                 .padding(vertical = 2.dp)
