@@ -25,6 +25,9 @@ class MainActivity : ComponentActivity() {
                     composable("OnboardScreen"){
                         OnboardScreen(navController)
                     }
+                    composable("CardScreen"){
+                        CardScreen(navController)
+                    }
                 })
                 }
             }
