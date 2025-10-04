@@ -41,19 +41,19 @@ fun PreviewScreen(){
 fun HomeScreen(navController: NavController)
 {
     val appsList = listOf(
-        AppData("Приложение", R.drawable.nichosi, "month of games", 4.7),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("VKontakte", R.drawable.nichosi, "month of games", 2.5),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("Геи против Пидоров", R.drawable.max, "month of games", 3.6),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("MAx", R.drawable.max, "month of games", 3.6)
+        AppData("Приложение", R.drawable.nichosi, "month of games", 4.7, 16),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("VKontakte", R.drawable.nichosi, "month of games", 2.5, 12),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("мге русы", R.drawable.max, "month of games", 3.6, 6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18),
+        AppData("MAx", R.drawable.max, "month of games", 3.6, 18)
     )
 
 
@@ -76,6 +76,7 @@ fun HomeScreen(navController: NavController)
                     icon = painterResource(appData.iconRes),
                     tag = appData.tag,
                     stars = appData.stars,
+                    ageRating = appData.ageRating,
                     navController = navController
                 )
             }
@@ -89,7 +90,8 @@ data class AppData(
     val name: String,
     val iconRes: Int,
     val tag: String,
-    val stars: Double
+    val stars: Double,
+    val ageRating: Int
 )
 
 @Composable
