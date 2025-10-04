@@ -8,11 +8,13 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,8 +55,7 @@ val imageList = listOf(
     R.drawable.nichosi,
     R.drawable.nichosi
 )
-
-val appName = "max"
+val appName = "max maxmaxmaxmaxmaxmaxmaxmaxmaxmaxmaxmaxmax"
 val devName = "Vkontakte"
 val rate = 18
 val iconImg = R.drawable.nichosi
@@ -76,13 +78,20 @@ fun GetCardPreview(){
 
 
 @Composable
-fun CardScreen(navController: NavController){
+fun CardScreen(navController: NavController, appId: Int? = null){
+
+    val appData = if (appId != null) {
+        getAppById(appId) ?: appsList.first()
+    } else {
+        appsList.first()
+    }
+
     Card(imageList = imageList,
-        appName = appName,
-        devName = devName,
-        rate = rate,
-        iconImg = iconImg,
-        description = description,
+        appName = appData.appName,
+        devName = appData.devName,
+        rate = appData.ageRating,
+        iconImg = appData.appIcon,
+        description = appData.description,
         navController = navController
     )
 }
@@ -140,13 +149,21 @@ fun Card(
                 contentScale = ContentScale.Crop
             )
 
-            Column(modifier = Modifier.offset(x = 50.dp, y = 35.dp)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .offset(x = 50.dp, y = 35.dp)
+                    .padding(end = 16.dp)
+            ) {
                 Text(
                     text=appName,//название приложения
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontSize = 24.sp,
                         fontWeight = FontWeight.SemiBold
-                    )
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.fillMaxWidth(0.8f)
                 )
                 Text(text=devName, Modifier.offset(y = 10.dp), color = Color.Blue)
                 //имя разработчика
@@ -154,6 +171,8 @@ fun Card(
                 //возрастной рейтинг
             }
         }
+
+        Spacer(Modifier.width(32.dp))
 
         Button(
             onClick = {},
@@ -163,7 +182,9 @@ fun Card(
                 .offset(y = 25.dp)
         ) { Text("Установить") }
 
-        Column(Modifier.padding(15.dp).offset(x = 10.dp)) {
+        Column(Modifier
+            .padding(15.dp)
+            .offset(x = 10.dp)) {
             Text("Описание", fontSize = 30.sp, fontWeight = FontWeight.Medium)
             Text(text=description, fontSize = 20.sp)
             Row(

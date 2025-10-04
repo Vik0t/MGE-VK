@@ -25,8 +25,9 @@ class MainActivity : ComponentActivity() {
                     composable("OnboardScreen"){
                         OnboardScreen(navController)
                     }
-                    composable("CardScreen"){
-                        CardScreen(navController)
+                    composable("CardScreen/{appId}") { backStackEntry ->
+                        val appId = backStackEntry.arguments?.getString("appId")?.toIntOrNull()
+                        CardScreen(navController, appId)
                     }
                 })
                 }

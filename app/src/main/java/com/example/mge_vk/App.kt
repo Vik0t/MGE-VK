@@ -3,6 +3,7 @@ package com.example.mge_vk
 
 
 
+import android.R.attr.maxLines
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -43,16 +46,18 @@ fun App(
     tag: String,
     stars: Double,
     ageRating: Int,
-    navController: NavController
+    navController: NavController,
+    appId: Int
 ){
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().clickable(enabled = true, onClick = {
-            navController.navigate("CardScreen")})
+            navController.navigate("CardScreen/$appId")})
     ){
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f)
         ) {
             Image(
                 painter = icon,
@@ -60,14 +65,18 @@ fun App(
                 modifier = Modifier.size(70.dp)
             )
             Spacer(Modifier.width(20.dp))
-            Column {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(text = name,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.primary)
-
-
-
-                Text(tag)
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis)
+                Text(
+                    text = tag,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis)
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -79,7 +88,7 @@ fun App(
                         tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(16.dp)
                     )
-                    Spacer(Modifier.width(2.dp))
+                    Spacer(Modifier.width(6.dp))
                     Text(
                         text ="$stars",
                         fontSize = 16.sp,
@@ -94,11 +103,20 @@ fun App(
             }
 
         }
-        Button(onClick = {}, colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary )  ) {
-            Text("Install")
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
+            modifier = Modifier
+                .padding(vertical = 2.dp)
+                .wrapContentWidth()
+                .height(40.dp)
+        ) {
+            Text(
+                text ="Установить",
+                fontSize = 12.sp)
         }
     }
-    Spacer(Modifier.height(16.dp))
+    Spacer(Modifier.height(12.dp))
 }
 
 
