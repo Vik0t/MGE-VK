@@ -19,45 +19,77 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewScreen(){
+    val navController2 = rememberNavController()
+    HomeScreen(navController = navController2)
+}
 
 @Composable
-fun HomeScreen(navController: NavController){
-    Column(Modifier.fillMaxHeight()
+fun HomeScreen(navController: NavController)
+{
+    val appsList = listOf(
+        AppData("Приложение", R.drawable.nichosi, "month of games", 4.7),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("VKontakte", R.drawable.nichosi, "month of games", 2.5),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("Геи против Пидоров", R.drawable.max, "month of games", 3.6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6),
+        AppData("MAx", R.drawable.max, "month of games", 3.6)
+    )
+
+
+
+    Column(Modifier
+        .fillMaxHeight()
         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
+    )
+    {
+        Title()
 
-    ) {
-        Column {
-            Title()
-            Spacer(Modifier.height(16.dp))
-            App(
-                name = "Приложение",
-                icon = painterResource(R.drawable.nichosi),
-                tag = "month of games",
-                stars = 4.7
-            )
-            App(
-                name = "MAx",
-                icon = painterResource(R.drawable.nichosi),
-                tag = "month of games",
-                stars = 3.6
-            )
-            App(
-                name = "VKontakte",
-                icon = painterResource(R.drawable.nichosi),
-                tag = "month of games",
-                stars = 2.5
-            )
-
-
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        )   {
+            items(appsList) { appData ->
+                App(
+                    name = appData.name,
+                    icon = painterResource(appData.iconRes),
+                    tag = appData.tag,
+                    stars = appData.stars
+                )
+            }
         }
+
         Footer()
     }
 }
+
+data class AppData(
+    val name: String,
+    val iconRes: Int,
+    val tag: String,
+    val stars: Double
+)
+
 @Composable
 fun Footer(){
 
