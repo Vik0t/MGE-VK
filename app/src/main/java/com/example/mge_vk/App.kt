@@ -35,8 +35,10 @@ import com.example.mge_vk.ui.theme.MGEVKTheme
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun App(
@@ -71,7 +73,10 @@ fun App(
 
                 Text(tag)
 
-                Row{
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                )
+                {
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "lal",
@@ -114,14 +119,18 @@ fun AgeRatingBadge(ageRating: Int, modifier: Modifier = Modifier)
             else -> Color(0xFF757575)
         },
         shape = RoundedCornerShape(4.dp),
-        modifier = modifier
+        modifier = modifier.height(height = 18.dp).width(width = 32.dp)
     ) {
         Text(
+            textAlign = TextAlign.Center,
             text = ageStr,
             color = Color.White,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+            modifier = Modifier
+                .padding(horizontal = 2.dp)
+                .fillMaxSize()
+                .wrapContentHeight(Alignment.CenterVertically)
         )
     }
 }
