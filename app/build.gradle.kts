@@ -40,7 +40,13 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.foundation.pager)
+    implementation(libs.androidx.material3) // Or latest version
+    implementation(libs.androidx.navigation.compose) // Or latest version
+    // For horizontal pager (optional, but common for onboarding)
+    implementation(libs.google.accompanist.pager) // Or latest version
+    implementation(libs.accompanist.pager.indicators) // For page indicators
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -49,6 +55,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
