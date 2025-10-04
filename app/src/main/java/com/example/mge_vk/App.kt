@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import java.io.File
 
 @Composable
 fun App(
@@ -43,7 +44,9 @@ fun App(
     tag: String,
     stars: Double,
     ageRating: Int,
-    navController: NavController
+    navController: NavController,
+    apkFile: File, // APK file or path as a parameter
+    onInstallClick: (File) -> Unit,
 ){
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,

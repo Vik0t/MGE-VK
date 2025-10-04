@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- For APKs in your app's private directory -->
+    <files-path name="apks" path="apks/" />
+
+    <!-- OR for APKs in public Downloads directory (use cautiously) -->
+    <!-- <external-path name="external_files" path="." /> -->
+</paths>
