@@ -4,6 +4,7 @@ package com.example.mge_vk
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.mge_vk.ui.theme.MGEVKTheme
 
 @Composable
@@ -36,11 +38,13 @@ fun App(
     icon: Painter,
     tag: String,
     stars: Double,
+    navController: NavController
 ){
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().clickable(enabled = true, onClick = {
+            navController.navigate("OnboardScreen")})
     ){
         Row(
             verticalAlignment = Alignment.CenterVertically

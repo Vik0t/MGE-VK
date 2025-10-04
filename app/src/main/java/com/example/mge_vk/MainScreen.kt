@@ -44,7 +44,7 @@ fun HomeScreen(navController: NavController)
         AppData("MAx", R.drawable.max, "month of games", 3.6),
         AppData("VKontakte", R.drawable.nichosi, "month of games", 2.5),
         AppData("MAx", R.drawable.max, "month of games", 3.6),
-        AppData("Геи против Пидоров", R.drawable.max, "month of games", 3.6),
+        AppData("LOL", R.drawable.max, "month of games", 3.6),
         AppData("MAx", R.drawable.max, "month of games", 3.6),
         AppData("MAx", R.drawable.max, "month of games", 3.6),
         AppData("MAx", R.drawable.max, "month of games", 3.6),
@@ -74,7 +74,8 @@ fun HomeScreen(navController: NavController)
                     name = appData.name,
                     icon = painterResource(appData.iconRes),
                     tag = appData.tag,
-                    stars = appData.stars
+                    stars = appData.stars,
+                    navController = navController
                 )
             }
         }
