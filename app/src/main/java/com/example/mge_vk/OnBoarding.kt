@@ -27,8 +27,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 data class OnboardPage(
     val imageRes: Int, val title: String, val description: String
@@ -37,16 +37,16 @@ data class OnboardPage(
 val onboardPagesList = listOf(
     OnboardPage(
         imageRes = R.drawable.nichosi,
-        title = "Welcome to Onboarding",
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        title = "Добро пожаловать в МГЕ БУЗ",
+        description = "Здесь вы можете скачать буузы"
     ), OnboardPage(
         imageRes = R.drawable.nichosi,
-        title = "Explore Exciting Features",
-        description = "Praesent at semper est, nec consectetur justo."
+        title = "Воспользуйся крутыми фичами",
+        description = "можно поставить класс"
     ), OnboardPage(
         imageRes = R.drawable.nichosi,
-        title = "Get Started Now",
-        description = "In auctor ultrices turpis at blandit."
+        title = "Начать использовать",
+        description = "Используя МГЕ БУЗ вы подтверждаете свою умственную отсталость"
     )
 )
 
@@ -100,6 +100,7 @@ fun OnBoardDetails(
 }
 @Composable
 fun OnBoardNavButton(
+    navController: NavController,
     modifier: Modifier = Modifier, currentPage: Int, noOfPages: Int, onNextClicked: () -> Unit
 ) {
     Button(
@@ -107,7 +108,7 @@ fun OnBoardNavButton(
             if (currentPage < noOfPages - 1) {
                 onNextClicked()
             } else {
-                // Handle onboarding completion
+                navController.navigate("HomeScreen")
             }
         }, modifier = modifier
     ) {
@@ -138,9 +139,9 @@ fun TabSelector(onboardPages: List<OnboardPage>, currentPage: Int, onTabSelected
         }
     }
 }
-@Preview(showBackground = true)
+
 @Composable
-fun OnboardScreen() {
+fun OnboardScreen(navController: NavController) {
     val onboardPages = onboardPagesList
     val currentPage = remember { mutableStateOf(0) }
 
@@ -167,7 +168,8 @@ fun OnboardScreen() {
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 16.dp),
             currentPage = currentPage.value,
-            noOfPages = onboardPages.size
+            noOfPages = onboardPages.size,
+            navController = navController
         ) {
             currentPage.value++
         }
