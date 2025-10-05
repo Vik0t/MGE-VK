@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,8 +16,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,6 +26,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -45,6 +49,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 
 val imageList = listOf(
@@ -84,10 +90,12 @@ fun CardScreen(navController: NavController, appId: Int? = null,
                apps: List<AppData> = appsList){
 
     val appData = if (appId != null) {
-        getAppById(appId) ?: apps.first()
+        // ✅ Search in the passed 'apps' list
+        apps.find { it.appId == appId } ?: apps.firstOrNull() ?: appsList.first()
     } else {
-        apps.first()
+        apps.firstOrNull() ?: appsList.first()
     }
+
 
     Card(imageList = imageList,
         appName = appData.appName,
@@ -96,7 +104,8 @@ fun CardScreen(navController: NavController, appId: Int? = null,
         iconImg = appData.appIcon,
         description = appData.description,
         navController = navController,
-        onInstallClick = { onInstallApp(appData.appId) }
+        onInstallClick = { onInstallApp(appData.appId) },
+        appTag = appData.tag
     )
 }
 
@@ -110,13 +119,16 @@ fun Card(
     iconImg: Int,
     description: String,
     navController: NavController,
-    onInstallClick: () -> Unit
+    onInstallClick: () -> Unit,
+    appTag: String
+
 
 
     ){
     // Переменная для текста нового комментария
     var commentText by remember { mutableStateOf("") }
-
+    var showFullscreenImage by remember { mutableStateOf(false) }
+    var selectedImageIndex by remember { mutableStateOf(0) }
 
     // Список комментариев (изначально пустой)
     val comments = remember { mutableStateListOf<String>() }
@@ -132,8 +144,8 @@ fun Card(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(bottom = 100.dp)
             .background(MaterialTheme.colorScheme.background)
+            .padding(bottom = 100.dp)
     ) {
 
         // Верхняя часть
@@ -217,7 +229,7 @@ fun Card(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 OutlinedButton(
-                    onClick = {},
+                    onClick = {navController.navigate("HomeScreen/$appTag")},
                     modifier = Modifier
                         .wrapContentWidth()
                         .padding(start = 8.dp)
@@ -226,52 +238,7 @@ fun Card(
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        "футбол",
-                        fontSize = 14.sp
-                    )
-                }
-                OutlinedButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(start = 8.dp)
-                        .alignByBaseline(),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        "Веселье",
-                        fontSize = 14.sp
-                    )
-                }
-                OutlinedButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(start = 8.dp)
-                        .alignByBaseline(),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        "чилл",
-                        fontSize = 14.sp
-                    )
-                }
-                OutlinedButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(start = 4.dp)
-                        .alignByBaseline(),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(4.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary // ИЗМЕНЕНО: использование темы
-                    )
-                ) {
-                    Text(
-                        "баскетболл",
+                        "$appTag",
                         fontSize = 14.sp
                     )
                 }
@@ -294,7 +261,13 @@ fun Card(
                     modifier = Modifier
                         .size(200.dp, 350.dp)
                         .padding(end = 10.dp)
-                        .clip(RoundedCornerShape(15.dp)),
+                        .clip(RoundedCornerShape(15.dp))
+                        .combinedClickable(
+                            onClick = {
+                                selectedImageIndex = index
+                                showFullscreenImage = true
+                            }
+                        ),
                     contentScale = ContentScale.Crop
                 )
             }
@@ -374,6 +347,64 @@ fun Card(
             }
         }
     }
+    // Диалог полноэкранного просмотра изображений
+    if (showFullscreenImage) {
+        Dialog(
+            onDismissRequest = { showFullscreenImage = false },
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false,
+                decorFitsSystemWindows = false
+            )
+        ) {
+            // ОБЩИЙ pagerState для пейджера
+            val fullscreenPagerState = rememberPagerState(
+                initialPage = selectedImageIndex,
+                pageCount = { imageList.size }
+            )
+
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                // Полноэкранный пейджер
+                HorizontalPager(
+                    state = fullscreenPagerState,
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    Image(
+                        painter = painterResource(id = imageList[page]),
+                        contentDescription = "Полноэкранный скриншот ${page + 1}",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+
+                // Кнопка выхода (крестик в левом верхнем углу)
+                IconButton(
+                    onClick = { showFullscreenImage = false },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(48.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(android.R.drawable.ic_menu_close_clear_cancel),
+                        contentDescription = "Закрыть",
+                        tint = Color.White
+                    )
+                }
+
+                // Индикатор текущей страницы (опционально)
+                Text(
+                    text = "${fullscreenPagerState.currentPage + 1}/${imageList.size}",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 32.dp)
+                )
+            }
+        }
+    }
+
 
     // Диалог удаления
     if (showDeleteDialog) {

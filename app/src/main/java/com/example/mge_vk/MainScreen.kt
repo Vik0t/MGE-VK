@@ -116,10 +116,6 @@ fun Footer(navController: NavController){
                 contentDescription = "lol",
                 tint = MaterialTheme.colorScheme.onSurface
             )
-            Text(
-                text = "Категории",
-                modifier = Modifier.padding(top = 4.dp)
-            )
         }
     }
 }

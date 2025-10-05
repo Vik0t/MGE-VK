@@ -1,6 +1,7 @@
 package com.example.mge_vk
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,16 +25,20 @@ import androidx.navigation.NavController
 
 
 
+
 @Composable
 fun CategoryScreen(navController: NavController, apps: List<AppData> = emptyList()) {
 
     val uniqueTags = apps.map { it.tag }.distinct() + "Все"
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(bottom = 16.dp, top = 16.dp, start = 16.dp, end = 16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(bottom = 16.dp, top = 16.dp, start = 16.dp, end = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text("Категории", fontSize = 30.sp)
+        Text("Категории", fontSize = 30.sp, color = MaterialTheme.colorScheme.onSurface)
 
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 150.dp),
@@ -48,16 +54,18 @@ fun CategoryScreen(navController: NavController, apps: List<AppData> = emptyList
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
+                        tint = MaterialTheme.colorScheme.onSurface,
                         contentDescription = "",
                         modifier = Modifier.size(80.dp)
                     )
                     val countApps = apps.count { it.tag == appData }
                     Text(
                         text = appData,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 20.sp
                     )
                     if (countApps != 0) {
-                        Text("$countApps")
+                        Text("$countApps", color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 

@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             onComplete = {
                                 markOnboardingCompleted()
-                                navController.navigate("HomeScreen") {
+                                navController.navigate("HomeScreen/Все") {
                                     popUpTo("OnboardScreen") { inclusive = true }
                                 }
                             }
