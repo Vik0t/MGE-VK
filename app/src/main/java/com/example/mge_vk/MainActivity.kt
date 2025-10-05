@@ -24,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+private var remoteAppsList by mutableStateOf<List<AppData>>(appsList)
 
 class MainActivity : ComponentActivity() {
 
@@ -147,8 +148,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     withContext(Dispatchers.Main) {
-                        remoteAppsList = localList // ✅ Now this triggers recomposition
-                        isDataLoaded = true
+                        remoteAppsList = localList // Update when ready
                     }
                 } else {
                     // Fallback to hardcoded list on error

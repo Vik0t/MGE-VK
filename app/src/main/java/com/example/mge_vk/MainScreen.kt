@@ -1,12 +1,13 @@
 package com.example.mge_vk
 
-import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,6 +34,15 @@ fun HomeScreen(navController: NavController,
                selectedCategory: String = "Все"
                )
 {
+    if (apps.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Загрузка приложений...", color = MaterialTheme.colorScheme.onSurface)
+        }
+        return
+    }
     val filtered = apps.filter{ it.tag == selectedCategory}
     Column(Modifier
         .fillMaxHeight()
