@@ -100,19 +100,17 @@ fun OnBoardDetails(
 }
 @Composable
 fun OnBoardNavButton(
-    navController: NavController,
-    modifier: Modifier = Modifier, currentPage: Int, noOfPages: Int, onNextClicked: () -> Unit
+    currentPage: Int,
+    totalPages: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = {
-            if (currentPage < noOfPages - 1) {
-                onNextClicked()
-            } else {
-                navController.navigate("HomeScreen")
-            }
-        }, modifier = modifier
+        onClick = onClick,
+        modifier = modifier
     ) {
-        Text(text = if (currentPage < noOfPages - 1) "Next" else "Get Started")
+        val buttonText = if (currentPage < totalPages - 1) "Next" else "Get Started"
+        Text(text = buttonText)
     }
 }
 @Composable
@@ -141,14 +139,16 @@ fun TabSelector(onboardPages: List<OnboardPage>, currentPage: Int, onTabSelected
 }
 
 @Composable
-fun OnboardScreen(navController: NavController) {
+fun OnboardScreen(
+    navController: NavController,
+    onComplete: () -> Unit
+) {
     val onboardPages = onboardPagesList
     val currentPage = remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-
         OnBoardImageView(
             modifier = Modifier
                 .weight(1f)
@@ -164,15 +164,19 @@ fun OnboardScreen(navController: NavController) {
         )
 
         OnBoardNavButton(
+            currentPage = currentPage.value,
+            totalPages = onboardPages.size,
+            onClick = {
+                if (currentPage.value < onboardPages.size - 1) {
+                    currentPage.value++
+                } else {
+                    onComplete() // 👈 This triggers saving + navigation
+                }
+            },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp),
-            currentPage = currentPage.value,
-            noOfPages = onboardPages.size,
-            navController = navController
-        ) {
-            currentPage.value++
-        }
+                .padding(top = 16.dp)
+        )
 
         TabSelector(
             onboardPages = onboardPages,
