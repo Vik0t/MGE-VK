@@ -11,6 +11,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.core.content.edit
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -22,8 +26,21 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 class MainActivity : ComponentActivity() {
-    private var remoteAppsList: List<AppData> = emptyList()
-    private var isDataLoaded = false
+
+    private fun isFirstLaunch(): Boolean {
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val isFirst = prefs.getBoolean("is_first_launch", true)
+        println("DEBUG: isFirstLaunch = $isFirst") // Check Logcat
+        return isFirst
+    }
+
+    private fun markOnboardingCompleted() {
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        prefs.edit { putBoolean("is_first_launch", false) }
+        println("DEBUG: Onboarding marked as completed") // Check Logcat
+    }
+    private var remoteAppsList by mutableStateOf<List<AppData>>(emptyList())
+    private var isDataLoaded by mutableStateOf(false)
     private var pendingApkFile: File? = null
     private val installPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -41,39 +58,61 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         ensureApksExist()
-
         fetchDataFromServer()
 
         enableEdgeToEdge()
+
+        val startDestination = if (isFirstLaunch()) {
+            "OnboardScreen"
+        } else {
+            "HomeScreen/Все"
+        }
+
         setContent {
             MGEVKTheme(true) {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = "OnboardScreen"
+                    startDestination = startDestination
                 ) {
-                    composable("HomeScreen") {
+                    composable("HomeScreen/{category}") {
+                        backStackEntry ->
+                        val category = backStackEntry.arguments?.getString("category") ?: "Все"
                         HomeScreen(
                             navController = navController,
                             onInstallApp = { appId ->
                                 installAppByAppId(appId)
                             },
-                            apps = remoteAppsList // ✅ pass dynamic list
+                            apps = remoteAppsList,
+                            category
                         )
                     }
+                    composable("CategoriesScreen") {
+                        CategoryScreen(navController,apps = remoteAppsList)
+                    }
                     composable("OnboardScreen") {
-                        OnboardScreen(navController)
+                        OnboardScreen(
+                            navController = navController,
+                            onComplete = {
+                                markOnboardingCompleted()
+                                navController.navigate("HomeScreen") {
+                                    popUpTo("OnboardScreen") { inclusive = true }
+                                }
+                            }
+                        )
                     }
                     composable("CardScreen/{appId}") { backStackEntry ->
                         val appId = backStackEntry.arguments?.getString("appId")?.toIntOrNull()
-                        CardScreen(navController=navController, appId=appId,
+                        CardScreen(
+                            navController = navController,
+                            appId = appId,
                             onInstallApp = { appId ->
                                 installAppByAppId(appId)
                             },
-                            apps = remoteAppsList // ✅ pass dynamic list
+                            apps = remoteAppsList
                         )
                     }
                 }
@@ -108,14 +147,13 @@ class MainActivity : ComponentActivity() {
                     }
 
                     withContext(Dispatchers.Main) {
-                        remoteAppsList = localList
+                        remoteAppsList = localList // ✅ Now this triggers recomposition
                         isDataLoaded = true
-                        // Optional: refresh UI if needed (Compose auto-updates if using State)
                     }
                 } else {
                     // Fallback to hardcoded list on error
                     withContext(Dispatchers.Main) {
-                        remoteAppsList = appsList
+                        remoteAppsList = appsList // ✅ Also triggers update
                         Toast.makeText(this@MainActivity, "Failed to load apps", Toast.LENGTH_SHORT).show()
                     }
                 }

@@ -96,8 +96,7 @@ fun CardScreen(navController: NavController, appId: Int? = null,
         iconImg = appData.appIcon,
         description = appData.description,
         navController = navController,
-        onInstallClick = { onInstallApp(appData.appId)},
-        appTag = appData.tag
+        onInstallClick = { onInstallApp(appData.appId) }
     )
 }
 
@@ -111,8 +110,7 @@ fun Card(
     iconImg: Int,
     description: String,
     navController: NavController,
-    onInstallClick: () -> Unit,
-    appTag: String
+    onInstallClick: () -> Unit
 
 
     ){
@@ -146,7 +144,7 @@ fun Card(
                     containerColor = MaterialTheme.colorScheme.surface, // ИЗМЕНЕНО: использование темы
                     contentColor = MaterialTheme.colorScheme.onSurface // ИЗМЕНЕНО: использование темы
                 ),
-                onClick = { navController.navigate("HomeScreen")}
+                onClick = { navController.navigateUp()}
             ) { Text("◀", color = MaterialTheme.colorScheme.onSurface) }
         }
 
@@ -222,6 +220,48 @@ fun Card(
                     onClick = {},
                     modifier = Modifier
                         .wrapContentWidth()
+                        .padding(start = 8.dp)
+                        .alignByBaseline(),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        "футбол",
+                        fontSize = 14.sp
+                    )
+                }
+                OutlinedButton(
+                    onClick = {},
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .padding(start = 8.dp)
+                        .alignByBaseline(),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        "Веселье",
+                        fontSize = 14.sp
+                    )
+                }
+                OutlinedButton(
+                    onClick = {},
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .padding(start = 8.dp)
+                        .alignByBaseline(),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        "чилл",
+                        fontSize = 14.sp
+                    )
+                }
+                OutlinedButton(
+                    onClick = {},
+                    modifier = Modifier
+                        .wrapContentWidth()
                         .padding(start = 4.dp)
                         .alignByBaseline(),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
@@ -231,10 +271,11 @@ fun Card(
                     )
                 ) {
                     Text(
-                        text = "$appTag",
+                        "баскетболл",
                         fontSize = 14.sp
                     )
                 }
+
             }
         }
 

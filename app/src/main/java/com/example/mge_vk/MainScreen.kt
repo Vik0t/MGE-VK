@@ -14,10 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Category
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,16 +29,11 @@ import androidx.navigation.NavController
 @Composable
 fun HomeScreen(navController: NavController,
                onInstallApp: (Int) -> Unit,
-               apps: List<AppData> = appsList
+               apps: List<AppData> = appsList,
+               selectedCategory: String = "Все"
                )
 {
-    val topApps = apps
-        .sortedByDescending {it.stars}
-        .take(10)
-        .shuffled()
-
-
-
+    val filtered = apps.filter{ it.tag == selectedCategory}
     Column(Modifier
         .fillMaxHeight()
         .background(MaterialTheme.colorScheme.background)
@@ -49,7 +41,7 @@ fun HomeScreen(navController: NavController,
         verticalArrangement = Arrangement.SpaceBetween
     )
     {
-        Title()
+        Title(selectedCategory)
         Row(
             modifier = Modifier.height(10.dp)
         ) {
@@ -58,97 +50,65 @@ fun HomeScreen(navController: NavController,
         LazyColumn(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp)
-        )   {
-            items(topApps) { appData ->
-                App(
-                    name = appData.appName,
-                    icon = painterResource(appData.appIcon),
-                    tag = appData.tag,
-                    stars = appData.stars,
-                    ageRating = appData.ageRating,
-                    navController = navController,
-                    appId = appData.appId,
-                    onInstallClick = { onInstallApp(appData.appId) }
-                )
+        ) {
+            if (selectedCategory == "Все") {
+                items(apps) { appData ->
+                    App(
+                        name = appData.appName,
+                        icon = painterResource(appData.appIcon),
+                        tag = appData.tag,
+                        stars = appData.stars,
+                        ageRating = appData.ageRating,
+                        navController = navController,
+                        appId = appData.appId,
+                        onInstallClick = { onInstallApp(appData.appId) }
+                    )
+                }
+            } else {
+                items(filtered) { appData ->
+                        App(
+                            name = appData.appName,
+                            icon = painterResource(appData.appIcon),
+                            tag = appData.tag,
+                            stars = appData.stars,
+                            ageRating = appData.ageRating,
+                            navController = navController,
+                            appId = appData.appId,
+                            onInstallClick = { onInstallApp(appData.appId) }
+                        )
+
+                }
             }
         }
 
-        Footer()
+        Footer(navController)
     }
 }
 
 @Composable
-fun Footer(){
+fun Footer(navController: NavController){
 
     Row(verticalAlignment = Alignment.Bottom,
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-        ) {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                modifier = Modifier.size(50.dp),
-                contentDescription = "lol",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Профиль",
-                modifier = Modifier.padding(top = 4.dp),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
+
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
+            modifier = Modifier.clickable(enabled = true, onClick = {
+                navController.navigate("CategoriesScreen")
+            })
         ) {
             Icon(
-                imageVector = Icons.Default.Search,
+                imageVector = Icons.Default.Category,
                 modifier = Modifier.size(50.dp),
                 contentDescription = "lol",
                 tint = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "Поиск",
-                modifier = Modifier.padding(top = 4.dp),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-        ) {
-            Icon(
-                imageVector = Icons.Default.AddCircle,
-                modifier = Modifier.size(50.dp),
-                contentDescription = "lol",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Добавить",
-                modifier = Modifier.padding(top = 4.dp),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.clickable(enabled = true, onClick = {})
-        ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                modifier = Modifier.size(50.dp),
-                contentDescription = "lol",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Избранное",
-                modifier = Modifier.padding(top = 4.dp),
-                color = MaterialTheme.colorScheme.onSurface
+                text = "Категории",
+                modifier = Modifier.padding(top = 4.dp)
             )
         }
     }
