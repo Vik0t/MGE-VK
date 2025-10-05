@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
         val startDestination = if (isFirstLaunch()) {
             "OnboardScreen"
         } else {
-            "HomeScreen"
+            "HomeScreen/Все"
         }
 
         setContent {
@@ -78,14 +78,20 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = startDestination
                 ) {
-                    composable("HomeScreen") {
+                    composable("HomeScreen/{category}") {
+                        backStackEntry ->
+                        val category = backStackEntry.arguments?.getString("category") ?: "Все"
                         HomeScreen(
                             navController = navController,
                             onInstallApp = { appId ->
                                 installAppByAppId(appId)
                             },
-                            apps = remoteAppsList
+                            apps = remoteAppsList,
+                            category
                         )
+                    }
+                    composable("CategoriesScreen") {
+                        CategoryScreen(navController,apps = remoteAppsList)
                     }
                     composable("OnboardScreen") {
                         OnboardScreen(

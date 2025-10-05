@@ -137,7 +137,7 @@ fun Card(
         Row {
             Button(
                 modifier = Modifier.offset(x = 10.dp, y = 20.dp),
-                onClick = { navController.navigate("HomeScreen")}
+                onClick = {  navController.navigateUp()}
             ) { Text("◀") }
         }
 
