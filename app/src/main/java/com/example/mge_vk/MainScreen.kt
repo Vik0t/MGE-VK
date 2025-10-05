@@ -1,5 +1,7 @@
 package com.example.mge_vk
 
+import android.content.res.Resources
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,8 +35,16 @@ fun HomeScreen(navController: NavController,
                apps: List<AppData> = appsList
                )
 {
+    val topApps = apps
+        .sortedByDescending {it.stars}
+        .take(10)
+        .shuffled()
+
+
+
     Column(Modifier
         .fillMaxHeight()
+        .background(MaterialTheme.colorScheme.background)
         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     )
@@ -48,7 +59,7 @@ fun HomeScreen(navController: NavController,
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         )   {
-            items(apps) { appData ->
+            items(topApps) { appData ->
                 App(
                     name = appData.appName,
                     icon = painterResource(appData.appIcon),
@@ -80,11 +91,13 @@ fun Footer(){
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 modifier = Modifier.size(50.dp),
-                contentDescription = "lol"
+                contentDescription = "lol",
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = "Профиль",
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier.padding(top = 4.dp),
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -95,11 +108,13 @@ fun Footer(){
             Icon(
                 imageVector = Icons.Default.Search,
                 modifier = Modifier.size(50.dp),
-                contentDescription = "lol"
+                contentDescription = "lol",
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = "Поиск",
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier.padding(top = 4.dp),
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -110,11 +125,13 @@ fun Footer(){
             Icon(
                 imageVector = Icons.Default.AddCircle,
                 modifier = Modifier.size(50.dp),
-                contentDescription = "lol"
+                contentDescription = "lol",
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = "Добавить",
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier.padding(top = 4.dp),
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -125,11 +142,13 @@ fun Footer(){
             Icon(
                 imageVector = Icons.Default.Favorite,
                 modifier = Modifier.size(50.dp),
-                contentDescription = "lol"
+                contentDescription = "lol",
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = "Избранное",
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier.padding(top = 4.dp),
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }

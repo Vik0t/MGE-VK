@@ -134,6 +134,7 @@ val appsList = listOf(
         ageRating = 12,
         description = "Навайбкодил епт"
     ),
+
 )
 
 fun getAppById(appId: Int): AppData? {

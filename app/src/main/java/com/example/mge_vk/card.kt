@@ -3,6 +3,7 @@ package com.example.mge_vk
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -46,12 +48,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 val imageList = listOf(
-    R.drawable.nichosi,
-    R.drawable.nichosi,
-    R.drawable.nichosi,
-    R.drawable.nichosi,
-    R.drawable.nichosi,
-    R.drawable.nichosi
+    R.drawable.max1,
+    R.drawable.max2,
+    R.drawable.max3,
+    R.drawable.max4,
+    R.drawable.max5,
+    R.drawable.max6
 )
 val appName = "max maxmaxmaxmaxmaxmaxmaxmaxmaxmaxmaxmaxmax"
 val devName = "Vkontakte"
@@ -94,7 +96,8 @@ fun CardScreen(navController: NavController, appId: Int? = null,
         iconImg = appData.appIcon,
         description = appData.description,
         navController = navController,
-        onInstallClick = { onInstallApp(appData.appId) }
+        onInstallClick = { onInstallApp(appData.appId)},
+        appTag = appData.tag
     )
 }
 
@@ -108,7 +111,8 @@ fun Card(
     iconImg: Int,
     description: String,
     navController: NavController,
-    onInstallClick: () -> Unit
+    onInstallClick: () -> Unit,
+    appTag: String
 
 
     ){
@@ -131,14 +135,19 @@ fun Card(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(bottom = 100.dp)
+            .background(MaterialTheme.colorScheme.background)
     ) {
 
         // Верхняя часть
         Row {
             Button(
                 modifier = Modifier.offset(x = 10.dp, y = 20.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.surface, // ИЗМЕНЕНО: использование темы
+                    contentColor = MaterialTheme.colorScheme.onSurface // ИЗМЕНЕНО: использование темы
+                ),
                 onClick = { navController.navigate("HomeScreen")}
-            ) { Text("◀") }
+            ) { Text("◀", color = MaterialTheme.colorScheme.onSurface) }
         }
 
         Row {
@@ -164,98 +173,68 @@ fun Card(
                         fontSize = 24.sp,
                         fontWeight = FontWeight.SemiBold
                     ),
+                    color = MaterialTheme.colorScheme.onSurface, // ИЗМЕНЕНО: использование темы
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.fillMaxWidth(0.8f)
                 )
-                Text(text=devName, Modifier.offset(y = 10.dp), color = Color.Blue)
+                Text(text=devName, Modifier.offset(y = 3.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 //имя разработчика
-                Text(text=rate.toString()+"+", Modifier.offset(y = 8.dp), color = Color.Gray)
+                Text(text=rate.toString()+"+", Modifier.offset(y = 3.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 //возрастной рейтинг
             }
         }
 
-        Spacer(Modifier.width(32.dp))
+        Spacer(Modifier.size(32.dp))
 
         Button(
             onClick = onInstallClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .offset(y = 25.dp)
-        ) { Text("Установить") }
+                .offset(y = 25.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary, // ИЗМЕНЕНО: использование темы
+                contentColor = MaterialTheme.colorScheme.onPrimary // ИЗМЕНЕНО: использование темы
+            )
+        ) { Text("Установить", fontWeight = FontWeight.Medium) }
+
+        Spacer(Modifier.size(16.dp))
 
         Column(Modifier
             .padding(15.dp)
             .offset(x = 10.dp)) {
-            Text("Описание", fontSize = 30.sp, fontWeight = FontWeight.Medium)
-            Text(text=description, fontSize = 20.sp)
+            Text("Описание", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
+            Spacer(Modifier.size(8.dp))
+            Text(text=description, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Spacer(Modifier.size(16.dp))
             Row(
                 modifier = Modifier.offset(y = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Категории:",
-                    fontSize = 20.sp,
-                    modifier = Modifier.alignByBaseline()
+                    "Категория:",
+                    fontSize = 14.sp,
+                    modifier = Modifier.alignByBaseline(),
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 OutlinedButton(
                     onClick = {},
                     modifier = Modifier
                         .wrapContentWidth()
-                        .padding(start = 8.dp)
+                        .padding(start = 4.dp)
                         .alignByBaseline(),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(4.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.primary // ИЗМЕНЕНО: использование темы
+                    )
                 ) {
                     Text(
-                        "футбол",
+                        text = "$appTag",
                         fontSize = 14.sp
                     )
                 }
-                OutlinedButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(start = 8.dp)
-                        .alignByBaseline(),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        "Веселье",
-                        fontSize = 14.sp
-                    )
-                }
-                OutlinedButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(start = 8.dp)
-                        .alignByBaseline(),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        "чилл",
-                        fontSize = 14.sp
-                    )
-                }
-                OutlinedButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(start = 8.dp)
-                        .alignByBaseline(),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        "баскетболл",
-                        fontSize = 14.sp
-                    )
-                }
-
             }
         }
 
@@ -285,6 +264,7 @@ fun Card(
             "Комментарии",
             fontSize = 24.sp,
             fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(20.dp, 50.dp, 20.dp, 10.dp)
         )
 

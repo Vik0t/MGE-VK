@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            MGEVKTheme {
+            MGEVKTheme(true) {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,

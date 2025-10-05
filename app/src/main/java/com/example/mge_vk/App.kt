@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
@@ -62,7 +63,9 @@ fun App(
             Image(
                 painter = icon,
                 contentDescription = name,
-                modifier = Modifier.size(70.dp)
+                modifier = Modifier
+                    .size(70.dp)
+                    .clip(RoundedCornerShape(12.dp))
             )
             Spacer(Modifier.width(20.dp))
             Column(
@@ -70,11 +73,13 @@ fun App(
             ) {
                 Text(text = name,
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Medium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis)
                 Text(
                     text = tag,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis)
 
@@ -125,11 +130,11 @@ fun AgeRatingBadge(ageRating: Int, modifier: Modifier = Modifier)
 {
     val ageStr = "$ageRating+"
     Surface(
-        color = when (ageStr) {
-            "18+" -> Color(0xffe65c53) // Красный для 18+
-            "16+" -> Color(0xffd4893d) // Оранжевый для 16+
-            "12+" -> Color(0xFF6399cf) // Синий для 12+
-            "6+" -> Color(0xFF428245)  // Зеленый для 6+
+        color = when {
+            ageRating >= 18 -> Color(0xffe65c53) // Красный для 18+
+            ageRating >= 16 && ageRating < 18 -> Color(0xffd4893d) // Оранжевый для 16+
+            ageRating >= 12 && ageRating < 16 -> Color(0xFF5C9CE6) // Синий для 12+
+            ageRating >= 6 && ageRating < 12 -> Color(0xFF428245)  // Зеленый для 6+
             else -> Color(0xFF757575)
         },
         shape = RoundedCornerShape(4.dp),

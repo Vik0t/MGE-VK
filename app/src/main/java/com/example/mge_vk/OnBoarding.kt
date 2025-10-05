@@ -36,17 +36,17 @@ data class OnboardPage(
 
 val onboardPagesList = listOf(
     OnboardPage(
-        imageRes = R.drawable.nichosi,
-        title = "Добро пожаловать в МГЕ БУЗ",
-        description = "Здесь вы можете скачать буузы"
+        imageRes = R.drawable.ru2,
+        title = "Добро пожаловать в RuStore",
+        description = "Здесь вы можете скачать приложения"
     ), OnboardPage(
-        imageRes = R.drawable.nichosi,
+        imageRes = R.drawable.ru2,
         title = "Воспользуйся крутыми фичами",
         description = "можно поставить класс"
     ), OnboardPage(
-        imageRes = R.drawable.nichosi,
+        imageRes = R.drawable.ru1,
         title = "Начать использовать",
-        description = "Используя МГЕ БУЗ вы подтверждаете свою умственную отсталость"
+        description = ""
     )
 )
 
@@ -61,18 +61,7 @@ fun OnBoardImageView(modifier: Modifier = Modifier, imageRes: Int) {
         )
         Box(modifier = Modifier
             .fillMaxSize()
-            .align(Alignment.BottomCenter)
-            .graphicsLayer {
-                // Apply alpha to create the fading effect
-                alpha = 0.6f
-            }
-            .background(
-                Brush.verticalGradient(
-                    colorStops = arrayOf(
-                        Pair(0.8f, Color.Transparent), Pair(1f, Color.White)
-                    )
-                )
-            ))
+            .align(Alignment.BottomCenter))
     }
 }
 
@@ -87,14 +76,16 @@ fun OnBoardDetails(
             text = currentPage.title,
             style = MaterialTheme.typography.displaySmall,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.onSurface
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = currentPage.description,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -146,7 +137,9 @@ fun OnboardScreen(navController: NavController) {
     val currentPage = remember { mutableStateOf(0) }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
 
         OnBoardImageView(
