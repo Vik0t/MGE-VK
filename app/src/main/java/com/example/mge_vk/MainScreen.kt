@@ -28,7 +28,9 @@ import androidx.navigation.NavController
 
 @Composable
 fun HomeScreen(navController: NavController,
-               onInstallApp: (Int) -> Unit)
+               onInstallApp: (Int) -> Unit,
+               apps: List<AppData> = appsList
+               )
 {
     Column(Modifier
         .fillMaxHeight()
@@ -46,7 +48,7 @@ fun HomeScreen(navController: NavController,
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         )   {
-            items(appsList) { appData ->
+            items(apps) { appData ->
                 App(
                     name = appData.appName,
                     icon = painterResource(appData.appIcon),

@@ -42,6 +42,11 @@ android {
 
 dependencies {
     val nav_version = "2.9.5"
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Coroutines (for async calls)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Jetpack Compose integration
     implementation(libs.androidx.navigation.compose)

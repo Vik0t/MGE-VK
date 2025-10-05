@@ -15,10 +15,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mge_vk.ui.theme.MGEVKTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class MainActivity : ComponentActivity() {
-
+    private var remoteAppsList: List<AppData> = emptyList()
+    private var isDataLoaded = false
     private var pendingApkFile: File? = null
     private val installPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -39,6 +44,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ensureApksExist()
+
+        fetchDataFromServer()
+
         enableEdgeToEdge()
         setContent {
             MGEVKTheme {
@@ -52,7 +60,8 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             onInstallApp = { appId ->
                                 installAppByAppId(appId)
-                            }
+                            },
+                            apps = remoteAppsList // ✅ pass dynamic list
                         )
                     }
                     composable("OnboardScreen") {
@@ -62,10 +71,59 @@ class MainActivity : ComponentActivity() {
                         val appId = backStackEntry.arguments?.getString("appId")?.toIntOrNull()
                         CardScreen(navController=navController, appId=appId,
                             onInstallApp = { appId ->
-                            installAppByAppId(appId)
-                            }
+                                installAppByAppId(appId)
+                            },
+                            apps = remoteAppsList // ✅ pass dynamic list
                         )
                     }
+                }
+            }
+        }
+    }
+    private fun fetchDataFromServer() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitClient.apiService.getApps()
+                if (response.isSuccessful) {
+                    val remoteList = response.body() ?: emptyList()
+                    // Convert RemoteAppData → AppData (using local icons)
+                    val localList = remoteList.map { remote ->
+                        // Map icon based on appId or apkFilename
+                        val iconRes = when (remote.apkFilename) {
+                            "buz.apk" -> R.drawable.buz
+                            "max.apk" -> R.drawable.max
+                            "vk.apk" -> R.drawable.vk
+                            else -> R.drawable.nichosi
+                        }
+                        AppData(
+                            appId = remote.appId,
+                            appName = remote.appName,
+                            devName = remote.devName,
+                            appIcon = iconRes,
+                            tag = remote.tag,
+                            stars = remote.stars,
+                            ageRating = remote.ageRating,
+                            description = remote.description
+                        )
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        remoteAppsList = localList
+                        isDataLoaded = true
+                        // Optional: refresh UI if needed (Compose auto-updates if using State)
+                    }
+                } else {
+                    // Fallback to hardcoded list on error
+                    withContext(Dispatchers.Main) {
+                        remoteAppsList = appsList
+                        Toast.makeText(this@MainActivity, "Failed to load apps", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    remoteAppsList = appsList
+                    Toast.makeText(this@MainActivity, "Network error", Toast.LENGTH_SHORT).show()
                 }
             }
         }

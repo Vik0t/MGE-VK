@@ -78,12 +78,13 @@ val description = "Скачай макс че как лох"
 
 @Composable
 fun CardScreen(navController: NavController, appId: Int? = null,
-               onInstallApp: (Int) -> Unit){
+               onInstallApp: (Int) -> Unit,
+               apps: List<AppData> = appsList){
 
     val appData = if (appId != null) {
-        getAppById(appId) ?: appsList.first()
+        getAppById(appId) ?: apps.first()
     } else {
-        appsList.first()
+        apps.first()
     }
 
     Card(imageList = imageList,

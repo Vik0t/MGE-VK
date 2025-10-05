@@ -47,7 +47,7 @@ fun App(
     ageRating: Int,
     navController: NavController,
     appId: Int,
-    onInstallClick: () -> Unit
+    onInstallClick: () -> Unit,
 ){
     Row (
         horizontalArrangement = Arrangement.SpaceBetween,
